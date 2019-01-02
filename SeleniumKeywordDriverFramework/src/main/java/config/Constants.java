@@ -19,6 +19,10 @@ public class Constants {
     public static final int Col_ActionKeyword =4 ;
     public static final int Col_RunMode =2 ;
 
+    // 第一个是测试用例结果标记列的索引，第二个是测试步骤里面的结果列索引
+    public static final int Col_Result =3 ;
+    public static final int Col_TestStepResult =5 ;
+
     // DataEngmine.excel中sheet的名称
     public static final String Sheet_TestSteps = "Test Steps";
     // 第二个工作簿的名称
@@ -27,6 +31,10 @@ public class Constants {
     // 测试登录用到的用户数据
     public static final String UserName = "天麻鸭";
     public static final String Password = "Qwert9632";
+
+    // 结果状态标记
+    public static final String KEYWORD_FAIL = "FAIL";
+    public static final String KEYWORD_PASS = "PASS";
 
     // ep专用
     public static final String URLep = "http://abc.e-ports.com/zh-Hans-CN/login";

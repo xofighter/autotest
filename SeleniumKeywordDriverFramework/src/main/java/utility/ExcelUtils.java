@@ -3,11 +3,13 @@ package utility;
 import config.Constants;
 import executionEngine.DriverScript;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ExcelUtils {
@@ -15,6 +17,7 @@ public class ExcelUtils {
     private static XSSFSheet ExcelWSheet;
     private static XSSFWorkbook ExcelWBook;
     private static XSSFCell Cell;
+    private static XSSFRow Row;
 
 
     // 设置Excel文件路径，方便读取到文件
@@ -29,7 +32,7 @@ public class ExcelUtils {
     }
 
     // 读取Excel文件单元格数据
-    // 新增sheetname参数，这样就可以去读取Test Steps和Test Cases两个工作表的单元格数据
+    // 新增sheet name参数，这样就可以去读取Test Steps和Test Cases两个工作表的单元格数据
     public static String getCellData(int RowNum, int ColNum, String SheetName ) throws Exception{
         try{
             ExcelWSheet = ExcelWBook.getSheet(SheetName);
@@ -92,4 +95,29 @@ public class ExcelUtils {
             return 0;
         }
     }
+
+    // 构造一个往单元格写数据的方法，主要是用来写结果pass还是fail
+    public static void setCellData(String Result,  int RowNum, int ColNum, String SheetName) throws Exception    {
+        try{
+
+            ExcelWSheet = ExcelWBook.getSheet(SheetName);
+            Row  = ExcelWSheet.getRow(RowNum);
+            Cell = Row.getCell(ColNum);
+            if (Cell == null) {
+                Cell = Row.createCell(ColNum);
+                Cell.setCellValue(Result);
+            } else {
+                Cell.setCellValue(Result);
+            }
+            // Constant variables Test Data path and Test Data file name
+            FileOutputStream fileOut = new FileOutputStream(Constants.Path_TestData);
+            ExcelWBook.write(fileOut);
+            //fileOut.flush();
+            fileOut.close();
+            ExcelWBook = new XSSFWorkbook(new FileInputStream(Constants.Path_TestData));
+        }catch(Exception e){
+            DriverScript.bResult = false;
+        }
+    }
+
 }
